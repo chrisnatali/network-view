@@ -60,17 +60,29 @@ function networkView() {
 
       var g3 = g_inner.append("g")
 
-      var lines = g3.selectAll("line")
+      var lines = g3.selectAll("path")
           .data(edges)
           .enter()
-          .append("line");
+          .append("path");
 
+      var line_path = function(d, i) {
+          path = "M" + X(nodes[d.source]) + " " + Y(nodes[d.source]) +
+                 "L" + X(nodes[d.target]) + " " + Y(nodes[d.target]);
+          return path;
+      };
+
+      lines.attr({
+          d: line_path, 
+          class: "edge", 
+          id: function(d, i) { return "edge" + i; }});
+      /*
       lines.attr({
           x1: function(d, i) { return X(nodes[d.source]); },
           y1: function(d, i) { return Y(nodes[d.source]); }, 
           x2: function(d, i) { return X(nodes[d.target]); }, 
           y2: function(d, i) { return Y(nodes[d.target]); },
           class: "edge"});
+      */
 
       var circles = g3.selectAll("circle")
           .data(nodes)
@@ -82,7 +94,40 @@ function networkView() {
           cy: function(d, i) { return Y(d); },
           class: "node", 
           r: 2});
+      
+      // node labels
+      var node_label_g = g3.append("g");
+      node_labels = node_label_g.selectAll("text")
+          .data(nodes)
+          .enter()
+          .append("text");
 
+      node_labels.attr({
+          x: function(d, i) { return X(d); },
+          y: function(d, i) { return Y(d); },
+          class: "node_label",
+          'text-anchor': "middle"})
+          .text(function(d, i) { return i; });
+                     
+
+      var edge_label_g = g3.append("g");
+
+      // align edgge labels with their edge paths
+      var text = edge_label_g.selectAll("text")
+            .data(edges)
+            .enter()
+            .append("text")
+            .attr("class", "edge_label")
+            .attr("text-anchor","middle") 
+            .append("textPath")
+            .attr("xlink:href", function(d, i) { return "#edge" + i; })
+            .attr("startOffset", "50%")
+            .text(function(d, i) { return d.weight.toPrecision(4); });
+
+
+      // on zoom:
+      // use translate to transform nodes/edges in g3 group
+      // re render axes
       function zoomed() {
           g3.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
           g1.select(".x.axis").call(xAxis);
