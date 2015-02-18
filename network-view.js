@@ -45,8 +45,10 @@ function networkView() {
           .call(zoom);
 
       var rect = g1.append("rect")
-          .attr({width: width, height: height})
-          .style("fill", "#eee")
+          .attr({
+              width: width, 
+              height: height, 
+              class: "network_outer_rect"})
           .style("pointer-events", "all");
      
       var g_inner = g1.append("svg")
@@ -55,7 +57,10 @@ function networkView() {
           .append("g");
 
       var rect = g_inner.append("rect")
-          .attr({width: port_width(), height: port_height()})
+          .attr({
+              width: port_width(), 
+              height: port_height(),
+              class: "network_inner_rect"})
           .style("fill", "#ddd")
 
       var g3 = g_inner.append("g")
@@ -75,14 +80,6 @@ function networkView() {
           d: line_path, 
           class: "edge", 
           id: function(d, i) { return "edge" + i; }});
-      /*
-      lines.attr({
-          x1: function(d, i) { return X(nodes[d.source]); },
-          y1: function(d, i) { return Y(nodes[d.source]); }, 
-          x2: function(d, i) { return X(nodes[d.target]); }, 
-          y2: function(d, i) { return Y(nodes[d.target]); },
-          class: "edge"});
-      */
 
       var circles = g3.selectAll("circle")
           .data(nodes)
@@ -108,7 +105,6 @@ function networkView() {
           class: "node_label",
           'text-anchor': "middle"})
           .text(function(d, i) { return i; });
-                     
 
       var edge_label_g = g3.append("g");
 

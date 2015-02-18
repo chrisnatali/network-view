@@ -12,6 +12,15 @@
 }
 
 svg {
+  font: 8px sans-serif;
+}
+
+.network_outer_rect {
+  fill: #eee;
+}
+
+.network_inner_rect {
+  fill: #ddd;
 }
 
 .node {
@@ -38,68 +47,6 @@ svg {
 </head>
 <body>
 <script type="text/javascript">
-/*
-        var w = 960, h = 500;
-        var nodes = [{x: 800, y: 1000}, 
-                     {x: 1000, y: 800},
-                     {x: 1200, y: 1000}];
-        var edges = [{source: 0, target: 1, weight: 1200.0}, 
-                     {source: 1, target: 2, weight: 1000}];
-
-        maxX = d3.max(nodes, function(n) { return n.x; });            
-        minX = d3.min(nodes, function(n) { return n.x; });            
-        maxY = d3.max(nodes, function(n) { return n.y; });            
-        minY = d3.min(nodes, function(n) { return n.y; });            
-
-        x = d3.scale.linear().domain([minX, maxX]).range([0, w]);
-        y = d3.scale.linear().domain([minY, maxY]).range([h, 0]);
-
-        var zoom = d3.behavior.zoom()
-                     .x(x)
-                     .y(y)
-                     .scaleExtent([1, 10])
-                     .on("zoom", zoomed);
-
-        svg = d3.select("body").append("svg")
-                               .attr({width: w, height: h})
-                               .append("g")
-                               .attr("transform", "translate(0,0)")
-                               .call(zoom);
-
-        var rect = svg.append("rect")
-            .attr({width: w, height: h})
-            .style("fill", "none")
-            .style("pointer-events", "all");
-
-        var container = svg.append("g");
-
-        var circles = container.selectAll("circle")
-                         .data(nodes)
-                         .enter()
-                         .append("circle");
-
-        circles.attr({
-                      cx: function(d, i) { return x(d.x); }, 
-                      cy: function(d, i) { return y(d.y); },
-                      fill: "red", 
-                      r: 10});
-
-        var lines = container.selectAll("line")
-                         .data(edges)
-                         .enter()
-                         .append("line");
-
-        lines.attr({
-                   x1: function(d, i) { return x(nodes[d.source].x); },
-                   y1: function(d, i) { return y(nodes[d.source].y); }, 
-                   x2: function(d, i) { return x(nodes[d.target].x); }, 
-                   y2: function(d, i) { return y(nodes[d.target].y); },
-                   stroke: "blue"});
-
-        function zoomed() {
-            container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        }
-*/
 d3.json("data.json", function(data) {
   d3.select("#network")
     .datum(data)
