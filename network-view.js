@@ -10,7 +10,10 @@ function networkView() {
       xScale = d3.scale.linear(),
       yScale = d3.scale.linear(),
       yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(6).tickSize(6, 0),
-      xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(6).tickSize(6, 0);
+      xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(6).tickSize(6, 0),
+      network_id = "",
+      edge_class = "edge",
+      node_class = "node";
 
   function view(selection) {
     selection.each(function(data) {
@@ -61,7 +64,6 @@ function networkView() {
               width: port_width(), 
               height: port_height(),
               class: "network_inner_rect"})
-          .style("fill", "#ddd")
 
       var g3 = g_inner.append("g")
 
@@ -78,8 +80,8 @@ function networkView() {
 
       lines.attr({
           d: line_path, 
-          class: "edge", 
-          id: function(d, i) { return "edge" + i; }});
+          class: edge_class, 
+          id: function(d, i) { return network_id + "_edge" + i; }});
 
       var circles = g3.selectAll("circle")
           .data(nodes)
@@ -89,7 +91,7 @@ function networkView() {
       circles.attr({
           cx: function(d, i) { return X(d); }, 
           cy: function(d, i) { return Y(d); },
-          class: "node", 
+          class: node_class, 
           r: 2});
       
       // node labels
@@ -116,7 +118,7 @@ function networkView() {
             .attr("class", "edge_label")
             .attr("text-anchor","middle") 
             .append("textPath")
-            .attr("xlink:href", function(d, i) { return "#edge" + i; })
+            .attr("xlink:href", function(d, i) { return "#" + network_id + "_edge" + i; })
             .attr("startOffset", "50%")
             .text(function(d, i) { return d.weight.toPrecision(4); });
 
@@ -184,6 +186,25 @@ function networkView() {
     yValue = _;
     return view;
   };
+
+  view.edge_class = function(_) {
+    if (!arguments.length) return edge_class;
+    edge_class = _;
+    return view;
+  };
+
+  view.node_class = function(_) {
+    if (!arguments.length) return node_class;
+    node_class = _;
+    return view;
+  };
+
+  view.network_id = function(_) {
+    if (!arguments.length) return network_id;
+    network_id = _;
+    return view;
+  };
+
 
   return view;
 }

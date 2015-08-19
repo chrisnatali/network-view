@@ -41,16 +41,35 @@ svg {
   stroke: #77a;
 }
 
+.cmp_node {
+  fill: #77a;
+}
+
+.cmp_edge {
+  stroke: #a77;
+}
+
+
 </style>
 <script type="text/javascript" src="d3.js"></script>
 <script type="text/javascript" src="network-view.js"></script>
 </head>
 <body>
 <script type="text/javascript">
-d3.json("data.json", function(data) {
+d3.json("ex_np_data.json", function(data) {
   d3.select("#network")
     .datum(data)
     .call(networkView());
+});
+
+nv_cmp = networkView();
+nv_cmp.node_class("cmp_node");
+nv_cmp.edge_class("cmp_edge");
+
+d3.json("ex_mb_data2.json", function(data) {
+  d3.select("#network")
+    .datum(data)
+    .call(networkView().network_id("cmp").node_class("cmp_node").edge_class("cmp_edge"));
 });
 </script>
 <p id="network">
